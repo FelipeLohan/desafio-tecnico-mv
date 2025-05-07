@@ -2,25 +2,44 @@ package com.felipelohan.mvdesafio.controllers;
 
 import com.felipelohan.mvdesafio.entities.Cliente;
 import com.felipelohan.mvdesafio.services.ClienteService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/clientes")
+@RequiredArgsConstructor
 public class ClienteController {
 
-    @Autowired
-    private ClienteService clienteService;
+    private final ClienteService clienteService;
 
     @PostMapping
-    public ResponseEntity<Cliente> criarCliente(@RequestBody Cliente cliente) {
+    public ResponseEntity<Cliente> salvar(@RequestBody Cliente cliente) {
         Cliente novoCliente = clienteService.salvar(cliente);
-        return ResponseEntity.status(HttpStatus.CREATED).body(novoCliente);
+        return ResponseEntity.status(201).body(novoCliente);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Cliente>> listar() {
+        return ResponseEntity.ok(clienteService.listar());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Cliente> buscarPorId(@PathVariable Long id) {
+        return clienteService.buscarPorId(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        if (clienteService.buscarPorId(id).isPresent()) {
+            clienteService.deletar(id);
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
-
