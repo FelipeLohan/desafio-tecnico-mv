@@ -2,15 +2,17 @@ package com.felipelohan.mvdesafio.services;
 
 import com.felipelohan.mvdesafio.entities.Cliente;
 import com.felipelohan.mvdesafio.repository.ClienteRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class ClienteService {
+
+    public ClienteService(ClienteRepository clienteRepository) {
+        this.clienteRepository = clienteRepository;
+    }
 
     private final ClienteRepository clienteRepository;
 
