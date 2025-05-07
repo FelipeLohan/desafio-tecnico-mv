@@ -1,5 +1,6 @@
 package com.felipelohan.mvdesafio.entities;
 
+import com.felipelohan.mvdesafio.entities.enums.TipoPessoa;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,8 +26,9 @@ public class Cliente {
     @Column(name = "cpf_cnpj", nullable = false, unique = true, length = 20)
     private String cpfCnpj;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "tipo", nullable = false, length = 20)
-    private String tipo;
+    private TipoPessoa tipo;
 
     @Column(name = "telefone", length = 20)
     private String telefone;
