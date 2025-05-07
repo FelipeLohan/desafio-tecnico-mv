@@ -28,14 +28,17 @@ public class Cliente {
     private String cpfCnpj;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "tipo", nullable = false, length = 20)
-    private TipoPessoa tipo;
+    @Column(name = "tipo_pessoa", nullable = false, length = 20)
+    private TipoPessoa tipoPessoa;
 
     @Column(name = "telefone", length = 20)
     private String telefone;
 
+    @Column(name = "ativo", nullable = false)
+    private Boolean ativo = true;
+
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "endereco_id")
+    @JoinColumn(name = "endereco_id", nullable = false)
     private Endereco endereco;
 
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
