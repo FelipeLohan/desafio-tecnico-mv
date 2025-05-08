@@ -36,12 +36,12 @@ public class MovimentacaoService {
     }
 
     public BigDecimal calcularReceitaEmpresa(Long clienteId) {
-        // Exemplo de cálculo simples de receita, utilizando a quantidade de movimentações
-        List<Movimentacao> movimentacoes = movimentacaoRepository.findByClienteId(clienteId);
+        // Usando a navegação correta: Conta → Cliente → Id
+        List<Movimentacao> movimentacoes = movimentacaoRepository.findByConta_Cliente_Id(clienteId);
         int numMovimentacoes = movimentacoes.size();
         BigDecimal receita = BigDecimal.ZERO;
 
-        // Lógica de cálculo conforme o número de movimentações
+        // Cálculo com faixas de movimentações
         if (numMovimentacoes <= 10) {
             receita = BigDecimal.valueOf(numMovimentacoes).multiply(BigDecimal.ONE);
         } else if (numMovimentacoes <= 20) {
